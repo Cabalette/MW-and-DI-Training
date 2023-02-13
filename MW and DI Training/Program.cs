@@ -1,6 +1,24 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+//}
+//public interface IShowTime
+//{
+//    string GetTime();
+//}
+//public class ShortTime : IShowTime
+//{
+//    public string GetTime()
+//    {
+//        return DateTime.Now.ToShortTimeString();
+//    }
+//}
+//public class LongTime : IShowTime
+//{
+//    public string GetTime()
+//    {
+//        return DateTime.Now.ToLongTimeString();
+//    }
+//}
 
 app.Run();
