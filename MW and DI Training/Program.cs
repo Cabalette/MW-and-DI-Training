@@ -1,47 +1,19 @@
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddTransient<IShowTime, ShortTime>();
-builder.Services.AddTransient<IShowTime, LongTime>();
-
-var app = builder.Build();
-
-app.UseMiddleware<ShowTimeMiddleware>();
-
-app.Run();
-
-public class ShowTimeMiddleware
+namespace MW_and_DI_Training
 {
-    private readonly RequestDelegate request;
-
-    public ShowTimeMiddleware(RequestDelegate request)
+    class Program
     {
-        this.request = request;
-    }
-    public async Task InvokeAsync(HttpContext context, IEnumerable<IShowTime> showTime)
-    {
-        context.Response.ContentType = "text/html;charset=utf-8";
-        if (context.Request.Path == "/short")
+        static void Main(string[] args)
         {
-            await context.Response.WriteAsync($"<h1>Time: {showTime.First(q => q.GetType() == typeof(ShortTime)).GetTime()}</h1>");
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddTransient<IShowTime, ShortTime>();
+            builder.Services.AddTransient<IShowTime, LongTime>();
+
+            var app = builder.Build();
+
+            app.UseMiddleware<ShowTimeMiddleware>();
+
+            app.Run();
         }
-        else await context.Response.WriteAsync($"<h1>Time: {showTime.First(q => q.GetType() == typeof(LongTime)).GetTime()}</h1>");
-    }
-}
-public interface IShowTime
-{
-    string GetTime();
-}
-public class ShortTime : IShowTime
-{
-    public string GetTime()
-    {
-        return DateTime.Now.ToShortTimeString();
-    }
-}
-public class LongTime : IShowTime
-{
-    public string GetTime()
-    {
-        return DateTime.Now.ToLongTimeString();
     }
 }
